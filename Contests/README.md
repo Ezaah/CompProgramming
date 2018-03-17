@@ -8,7 +8,3 @@ Contest
     ├─ input.in
     ├─ main.cpp
 ```
-
-
-│  └── Folders
-├──
