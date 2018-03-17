@@ -1,6 +1,7 @@
 # Backup of all competitive shit
 
 # Generic Directory
+.. code::
 .
 |
 |-- Contests
