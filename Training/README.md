@@ -1,6 +1,6 @@
 # Directorios de multiples jueces online.
 
-## Directorio Generico:
+#### Directorio Generico:
 ```bash
 Judge
 └─ Problem_set

@@ -1,6 +1,6 @@
-# Directorio de contests, aca se guardan los contests.
+# Directorio de contests
 
-## Directorio Generico
+#### Directorio Generico
 ```bash
 Contest
 └─ Problem name (Problem number)
