@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 
-
+// retry
 int main(){
 	size_t input_times;
 	std::cin >> input_times;
@@ -29,7 +29,7 @@ int main(){
 			}else{
 				times[time] = 1;
 			}
-			std::cout << time << " " << times[time] << " " << min_time  << " " << max_repeats << "\n";
+	//		std::cout << time << " " << times[time] << " " << min_time  << " " << max_repeats << "\n";
 			if(times[time] > max_repeats){
 				max_repeats = times[time];
 				min_time = time;
