@@ -41,7 +41,7 @@ Utilizaremos una función `childs(u)` que entrega la lista de hijos del vertice 
 Los valores obtenidos por el dfs serán utilizados tanto para la descomposición del árbol como para hacer las consultas posteriormente.
 
 ### Descomponer el árbol
-Vamos a descomponer el árbol en un conjunto de cadenas para optimizar el tiempo de consultas, el criterio sobre si agregar un vertice a una cadena ya existente está dado por si es el hijo "más pesado" (hint: ahi viene lo de Heavy) de su padre. El resto de los hermanos del vertice pertenecerán a nuevas cadenas.
+Vamos a descomponer el árbol en un conjunto de cadenas para optimizar el tiempo de consultas, el criterio sobre si agregar un vertice a una cadena ya existente está dado por si es el hijo "más pesado" (hint: ahi viene lo de Heavy) de su padre. El resto de los hermanos del vertice pertenecerán a nuevas cadenas. En la siguiente imagen se muestra un árbol ya descompuesto, cada color correspone a una cadena.
 
 ![](hdl_example.gv.svg)
 
@@ -88,6 +88,8 @@ Estos usando el árbol de ejemplo los arreglos tendrían estos contenidos:
 | Head        | 0  | 0 | 2 | 3  | 0 | 5 | 6 | 7  | 2 | 9  | 3  | 0  | 6  | 2  | 9  | 3  | 0  | 2  | 3  | 19 | 0  |
 | chainIndex  | 0  | 0 | 3 | 5  | 0 | 1 | 2 | 4  | 3 | 7  | 5  | 0  | 2  | 3  | 7  | 5  | 0  | 3  | 5  | 6  | 0  |
 | valuesIndex | -1 | 0 | 8 | 13 | 1 | 5 | 6 | 12 | 9 | 18 | 14 | 2  | 7  | 10 | 19 | 15 | 3  | 11 | 16 | 17 | 4  |
+
+
 Una vez terminado la descomposición se inserta el arreglo `values` en un segment tree que nos permitirá hacer las consultas.
 ### Las consultas
 Entonces, tenemos una serie de arreglos que tienen almacenado la información necesaria para hacer las consultas y un segment tree para hacer consultas de rango. Como carajos hacemos las consultas?
