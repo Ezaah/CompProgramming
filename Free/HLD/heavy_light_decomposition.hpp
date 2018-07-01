@@ -1,20 +1,24 @@
 #include <bits/stdc++.h>
 #include "segment_tree.hpp"
 
+// TODO: Update edges. Calculate distance between 2 nodes. Documentate code... fuck me
+
+template <typename data>
+void debug(const std::vector<data>& array){
+  for(size_t i = 0; i < array.size(); i++){
+    std::cout << array[i]<< " ";
+  }
+  std::cout << std::endl;
+}
+
+
 template <typename Weight, typename BinaryOp>
 class heavy_light_decomposition {
 
   std::vector<size_t> parent, depth;
   std::vector<size_t> head, chain_index, values_index;
   cpl::segment_tree<Weight, BinaryOp> stree;
-
-  template <typename data>
-  void debug(const std::vector<data>& array){
-    for(size_t i = 0; i < array.size(); i++){
-      std::cout << array[i]<< " ";
-    }
-    std::cout << std::endl;
-  }
+  BinaryOp operation{};
 
 public:
 
@@ -45,7 +49,7 @@ public:
     //Decomposition Inits
     head.resize(num_vertices);
     chain_index.resize(num_vertices);
-    values_index.resize(num_vertices, -1);
+    values_index.resize(num_vertices);
     std::vector<Weight> values(num_vertices);
     size_t ptr = 0;
     size_t chain = 0;
@@ -83,13 +87,39 @@ public:
     };
     decomposition(root, Weight{0}, root);
 
-    debug(head);
-    debug(chain_index);
-    debug(values_index);
-    debug(values);
+    // Segment Tree init
+    stree.assign(values.begin(), values.end());
   }
 
- // QUERIES:
- // En misma cadena: [index[v] + 1, index[u] + 1)
- // En distinta cadena: [index[head[u]], index[u] + 1)
+  size_t lca(size_t u, size_t v) const {
+    while(chain_index[u] != chain_index[v]){
+      if(depth[head[u]] > depth[head[v]]){
+        u = parent[head[u]];
+      }else{
+        v = parent[head[v]];
+      }
+    }
+    return (depth[u] > depth[v]) ? v : u;
+  }
+
+  Weight query(const size_t u, const size_t v) const {
+    const size_t middle = lca(u,v);
+
+    std::function<Weight(size_t, size_t)> climb_chain;
+    climb_chain = [&](size_t u, size_t v){
+      Weight ans = 0;
+      while(true){
+        if(chain_index[u] == chain_index[v]){
+          ans = operation(ans, stree.accumulate(values_index[v] + 1, values_index[u] + 1));
+          break;
+        }
+        ans = operation(ans, stree.accumulate(values_index[head[u]], values_index[u] + 1));
+        u = parent[head[u]];
+      }
+      return ans;
+    };
+
+    return operation(climb_chain(u, middle), climb_chain(v, middle));
+  }
+
 };
