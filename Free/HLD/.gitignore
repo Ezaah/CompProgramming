@@ -1,5 +1,5 @@
-.py
-.gv
-.log
-.in
-.ans
+*.py
+*.gv
+*.log
+*.in
+
