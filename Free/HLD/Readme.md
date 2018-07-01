@@ -26,14 +26,16 @@ La información que se obtendrá será:
 La implementación de este bfs es recursiva que retornará el valor del subárbol del hijo de un vertice `v` al final de su ejecución, este valor luego será sumado con todos los hijos de `v` para obtener el valor del árbol de `v`.
 
 ```python
-def dfs(u, father, depth_value):
-  parent[u] = father
-  depth[u] = depth_value
-  size = 1
-  for v in childs(v):
-    size += dfs(v, u, depth_value + 1)
-  subsize[u] = size
-  return size
+def dfs(u):
+  visited[u] = 1 # Arreglo necesario para el DFS.
+  subsize[u] = 1
+
+  for child in childs(u):
+      depth[child] = depth[u] + 1
+      parent[child] = u
+      subsize[u] += dfs(child)
+
+  return subsize[u]
 
 ```
 Utilizaremos una función `childs(u)` que entrega la lista de hijos del vertice `u`.
@@ -50,8 +52,8 @@ Además almacenamos la información restante para el vertice que se necesaria en
 def hld(u, cost, chain):
   chainIndex[u] = chain
   valuesIndex[u] = ptr
-  ptr += 1
   values[ptr] = cost
+  ptr += 1
 
   if leaf(u):
     return
@@ -83,18 +85,18 @@ Donde los arreglos son:
 
 Estos usando el árbol de ejemplo los arreglos tendrían estos contenidos:
 
-| Vertices    | 0  | 1 | 2 | 3  | 4 | 5 | 6 | 7  | 8 | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
-| ------------|:--:|:-:|:-:|:--:|:-:|:-:|:-:|:--:|:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-| Head        | 0  | 0 | 2 | 3  | 0 | 5 | 6 | 7  | 2 | 9  | 3  | 0  | 6  | 2  | 9  | 3  | 0  | 2  | 3  | 19 | 0  |
-| chainIndex  | 0  | 0 | 3 | 5  | 0 | 1 | 2 | 4  | 3 | 7  | 5  | 0  | 2  | 3  | 7  | 5  | 0  | 3  | 5  | 6  | 0  |
-| valuesIndex | -1 | 0 | 8 | 13 | 1 | 5 | 6 | 12 | 9 | 18 | 14 | 2  | 7  | 10 | 19 | 15 | 3  | 11 | 16 | 17 | 4  |
+| Vertices    | 0 | 1 | 2 | 3  | 4 | 5 | 6 | 7  | 8  | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
+| ------------|:-:|:-:|:-:|:--:|:-:|:-:|:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| Head        | 0 | 0 | 2 | 3  | 0 | 5 | 6 | 7  | 2  | 9  | 3  | 0  | 6  | 2  | 9  | 3  | 0  | 2  | 3  | 19 | 0  |
+| chainIndex  | 0 | 0 | 3 | 5  | 0 | 1 | 2 | 4  | 3  | 7  | 5  | 0  | 2  | 3  | 7  | 5  | 0  | 3  | 5  | 6  | 0  |
+| valuesIndex | 0 | 1 | 9 | 14 | 2 | 6 | 7 | 13 | 10 | 19 | 15 | 3  | 8  | 11 | 20 | 16 | 4  | 12 | 17 | 18 | 5  |
 
 
 Una vez terminado la descomposición se inserta el arreglo `values` en un segment tree que nos permitirá hacer las consultas.
 ### Las consultas
 Entonces, tenemos una serie de arreglos que tienen almacenado la información necesaria para hacer las consultas y un segment tree para hacer consultas de rango. Como carajos hacemos las consultas?
 
-Es simple, el segment tree está ordenado por las cadenas, es decir, estarán todas las aristas de la cadena 1 al principio, seguido por las aristas de la cadena 2 y asi sucesivamente como se ve en la siguiente imagen que corresponde al arreglo values del ejemplo anterior.
+Es simple, el segment tree está ordenado por las cadenas, es decir, estarán todas las aristas de la cadena 1 al principio, seguido por las aristas de la cadena 2 y asi sucesivamente como se ve en la siguiente imagen que corresponde al arreglo values del ejemplo anterior. *Cabe mencionar que el primer elemento jamás será consultado debido a la forma que se harán las consultas. En definición corresponde el valor de la arista con que se llega a la raíz del árbol.*
 
 ![](hdl_array.gv.svg)
 
@@ -106,6 +108,8 @@ Pero, y si no?. Aqui es donde sale la magia de la descomposición, como `u` y `v
 Se preguntarán que pasa con el vertice `v`, porque ese vertice jamas lo movemos? la razón de aquello está explicado en el siguiente punto pero en esencia es que antes de hacer la consulta romperemos la consulta entre `u` y `v` en dos consultas: entre `query(u, lca(u,v))` y  `query(v, lca(u,v))`.
 
 ```python
+# RMQ pensado con un ST que responde a consultas en un rango [S,E],  
+# ajustar el rango de la consulta dependiendo de la implementación de su ST
 def query(u, v):
   ans = 0;
   while True:
@@ -118,6 +122,8 @@ def query(u, v):
 
   return ans
 ```
+
+
 ### Lowest Common Ancestor
 
 ```python
