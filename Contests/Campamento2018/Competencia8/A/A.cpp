@@ -6,13 +6,22 @@ typedef long long sizet;
 /*
  * TLE :(
  * Posible optimizacion sin cambiar algoritmo: 
- * 	-> Hay muchas edges y muchos vertices (Asumo que la cantidad de edges es V^2, asique la opcion mas sensata es reducir los vertices)
+ * 	-> Hay muchas edges y muchos vertices (Asumo que la cantidad de edges es V^2, 
+ 	   asique la opcion mas sensata es reducir los vertices)
  * 	-> En vez de tomar los intervalos de tiempo con un tamaño uno, hacerlos de forma que esten condensados.
- * 		-> Ej: Si tengo 2 intervalos (a, b) y (c, d) correspondientes a dos monos, Los puedo subdividir en intervalos en 4 casos:
- * 			-> Caso 1: b <= c. En ese caso los intervalos no se tocan y simplemente hago un vertice que cubra todo el intervalo (a,b) para que alimente al mono 1 (con un limite de b-a. Lo mismo para el intervalo (c,d).
- * 			-> Caso 2: a < c < b < d. En este caso los intervalos se solapan. Los puedo dividir en 3 intervalos (a, c), (c, b), (b, d). El intervalo (a,c) solo alimentara al mono 1,  el intervalo (b, d) solo al mono 2, y el intervalo (c, b) alimentara a ambos. (Se aplica la misma regla para la capacidad de las aristas).
- * 			-> Caso 3: (a, b) == (c, d). En ese caso ambos monos comparten totalmente todo el por lo que se hace un solo vertice para ese intervalo y que alimente a ambos monos.
- * 			-> Caso 4: (a, b) contenido en (c, d) o viceversa. En este caso se replica el caso 2 con los intervalos (a, c), (c, d), (d, b) alimentado a los monos correspondientes.
+ * 		-> Ej: Si tengo 2 intervalos (a, b) y (c, d) correspondientes a dos monos, 
+ 		       los puedo subdividir en intervalos en 4 casos:
+ * 			-> Caso 1: b <= c. En ese caso los intervalos no se tocan y simplemente hago un vertice que cubra 
+ 				   todo el intervalo (a,b) para que alimente al mono 1 (con un limite de b-a). 
+				   Lo mismo para el intervalo (c,d).
+ * 			-> Caso 2: a < c < b < d. En este caso los intervalos se solapan. Los puedo dividir en 
+ 				   3 intervalos (a, c), (c, b), (b, d). El intervalo (a,c) solo alimentara al mono 1,  
+				   el intervalo (b, d) solo al mono 2, y el intervalo (c, b) alimentara a ambos. 
+				   (Se aplica la misma regla para la capacidad de las aristas).
+ * 			-> Caso 3: (a, b) == (c, d). En ese caso ambos monos comparten totalmente todo el por lo que se 
+ 				    hace un solo vertice para ese intervalo y que alimente a ambos monos.
+ * 			-> Caso 4: (a, b) contenido en (c, d) o viceversa. En este caso se replica el caso 2 con los 
+ 				   intervalos (a, c), (c, d), (d, b) alimentado a los monos correspondientes.
  *	-> En caso de que de TLE aun con esa optimizacion, habrá que buscar otro algoritmo que corra mas rapido de O(VE^2).
  * 
  * */
