@@ -172,3 +172,6 @@ venv.bak/
 .history
 # End of https://www.gitignore.io/api/c++,linux,cmake,python
 
+### YCM compile commands
+
+.ycm_extra_conf.py
