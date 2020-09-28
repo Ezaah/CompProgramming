@@ -74,11 +74,11 @@ ll irand(ll a, ll b){
     return a + rand() % (b - a + 1);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout << setprecision(10) << fixed;
-
+    srand(stoi(argv[0]));
 #ifdef LOCAL_DEFINE
     cerr << "Time elapsed: " << 1.0 * clock() / CLOCKS_PER_SEC << " s.\n";
 #endif
